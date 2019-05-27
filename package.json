@@ -1,0 +1,25 @@
+{
+  "name": "motion-orchestra",
+  "version": "1.0.0",
+  "description": "",
+  "main": "site.js",
+  "scripts": {
+    "dev": "parcel serve src/index.html",
+    "build": "parcel src/index.html",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "parcel": "^1.12.3"
+  },
+  "dependencies": {
+    "diff-cam-engine": "^1.0.2",
+    "howler": "^2.1.2",
+    "lodash.debounce": "^4.0.8",
+    "site": "^2.50.1"
+  },
+  "browserslist": [
+    "last 1 Chrome version"
+  ]
+}
