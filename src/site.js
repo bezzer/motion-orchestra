@@ -1,16 +1,60 @@
 import DiffCamEngine from './diff-cam-engine';
-import { start, setPlaybackSpeed } from './audio.js';
+import { initVisualisation } from './visualisation';
+import multitrack from './multi-track';
+import single from './single-track';
+import singleRate from './single-track-rate';
 
 export default function initSite() {
   const video = document.getElementById('video');
   const canvas = document.getElementById('motion');
   const score = document.getElementById('score');
-  const audio = document.getElementById('audio');
+  const selector = document.getElementById('select-audio');
 
-  // Load the audio file
-  audio.onclick = function() {
-    start();
-  };
+  let selected = null;
+
+  function initToggles() {
+    const toggles = document.querySelectorAll('.toggle');
+    toggles.forEach(element => {
+      element.addEventListener('click', () => {
+        const targetEl = document.querySelector(element.dataset.target);
+        targetEl.classList.toggle('hidden');
+      });
+    });
+  }
+  initToggles();
+
+  selector.addEventListener('change', event => {
+    console.log(event);
+    switch (event.target.value) {
+      case 'single':
+        multitrack.stop();
+        singleRate.stop();
+        initAudio(single);
+        break;
+      case 'single-rate':
+        multitrack.stop();
+        single.stop();
+        initAudio(singleRate);
+        break;
+      case 'multi':
+        single.stop();
+        singleRate.stop();
+        initAudio(multitrack);
+        break;
+      default:
+        if (selected) {
+          selected.stop();
+          selected = null;
+        }
+    }
+  });
+
+  // Start any audio methods
+  function initAudio(track) {
+    selected = track;
+    selected.init();
+    initVisualisation();
+  }
 
   function initSuccess() {
     DiffCamEngine.start();
@@ -22,7 +66,9 @@ export default function initSite() {
 
   function capture(payload) {
     score.textContent = payload.score;
-    setPlaybackSpeed(payload.score);
+    if (selected) {
+      selected.setPlaybackSpeed(payload.score);
+    }
   }
 
   DiffCamEngine.init({

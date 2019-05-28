@@ -14,3 +14,4 @@ This is a simple demo that uses camera motion to control audio playback
 
 - Howler - https://github.com/goldfire/howler.j
 - Diff Cam Engine - http://diffcam.com/
+- Featuring music from - https://icons8.com/music
